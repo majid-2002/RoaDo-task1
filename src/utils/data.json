@@ -1,0 +1,44 @@
+[
+    {
+        "userId": "user1",
+        "deviceId": "device1",
+        "loggedInAt": "2023-04-01T08:00:00.000Z",
+        "loggedOutAt": "2023-04-01T18:00:00.000Z",
+        "lastSeenAt": "2023-04-01T19:00:00.000Z"
+    },
+    {
+        "userId": "user2",
+        "deviceId": "device2",
+        "loggedInAt": "2023-04-01T10:00:00.000Z",
+        "loggedOutAt": "2023-04-01T20:00:00.000Z",
+        "lastSeenAt": "2023-04-01T21:00:00.000Z"
+    },
+    {
+        "userId": "user1",
+        "deviceId": "device3",
+        "loggedInAt": "2023-04-15T08:00:00.000Z",
+        "loggedOutAt": "2023-04-15T18:00:00.000Z",
+        "lastSeenAt": "2023-04-15T19:00:00.000Z"
+    },
+    {
+        "userId": "user3",
+        "deviceId": "device4",
+        "loggedInAt": "2023-04-15T10:00:00.000Z",
+        "loggedOutAt": "2023-04-15T20:00:00.000Z",
+        "lastSeenAt": "2023-04-15T21:00:00.000Z"
+    },
+    {
+        "userId": "user2",
+        "deviceId": "device5",
+        "loggedInAt": "2023-05-01T08:00:00.000Z",
+        "loggedOutAt": "2023-05-01T18:00:00.000Z",
+        "lastSeenAt": "2023-05-01T19:00:00.000Z"
+    },
+    {
+        "userId": "user4",
+        "deviceId": "device6",
+        "loggedInAt": "2023-05-01T10:00:00.000Z",
+        "loggedOutAt": "2023-05-01T20:00:00.000Z",
+        "lastSeenAt": "2023-05-01T21:00:00.000Z"
+    }
+]
