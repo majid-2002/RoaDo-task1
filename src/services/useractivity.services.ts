@@ -16,9 +16,21 @@ interface UserActivity {
  * @returns True if the user is considered active, false otherwise.
  */
 function isActive(activity: UserActivity, threshold: number): boolean {
-  const totalActiveTime = activity.lastSeenAt.reduce((acc, timestamp) => {
-    return acc + timestamp.getTime();
-  }, 0);
+  
+  // Need at least 2 lastSeenAt timestamps to calculate active time
+  if (activity.lastSeenAt.length < 2) {
+    return false;
+  }
+
+  // Sort lastSeenAt timestamps in ascending order
+  activity.lastSeenAt.sort((a, b) => a.getTime() - b.getTime());
+
+  let totalActiveTime = 0;
+  for (let i = 1; i < activity.lastSeenAt.length; i++) {
+    const duration =
+      activity.lastSeenAt[i].getTime() - activity.lastSeenAt[i - 1].getTime();
+    totalActiveTime += duration;
+  }
 
   return totalActiveTime >= threshold;
 }
@@ -28,17 +40,25 @@ function isActive(activity: UserActivity, threshold: number): boolean {
  * @param data - The array of user activity records.
  * @param month - The month to filter by (0-indexed, 0 = January).
  * @param year - The year to filter by.
+ * @param includeLastSeen - (Optional) Whether to include last seen activity in the filter. Defaults to false.
  * @returns An array of user activity records that fall within the specified month and year.
  */
-function filterByMonth(
+
+function filterByMonthAndYear(
   data: UserActivity[],
   month: number,
   year: number,
+  includeLastSeen: boolean = false,
 ): UserActivity[] {
   return data.filter((activity) => {
     return (
-      activity.loggedInAt.getMonth() === month &&
-      activity.loggedInAt.getFullYear() === year
+      (activity.loggedInAt.getMonth() === month &&
+        activity.loggedInAt.getFullYear() === year) ||
+      (includeLastSeen &&
+        activity.lastSeenAt.some(
+          (timestamp) =>
+            timestamp.getMonth() === month && timestamp.getFullYear() === year,
+        ))
     );
   });
 }
@@ -71,7 +91,7 @@ function calculateMLUandMAU(
     activeDescripton = "lastSeenActivity"; // Default to "lastSeenActivity"
   }
 
-  const monthlyData = filterByMonth(data, month, year);
+  const monthlyData = filterByMonthAndYear(data, month, year);
   const uniqueLoggedInUsers = new Set<string>();
 
   // 1. Calculate the monthly logged in users (MLU)
@@ -81,9 +101,16 @@ function calculateMLUandMAU(
 
   const mlu = uniqueLoggedInUsers.size;
 
+  const monthlyDataForActiveUsers = filterByMonthAndYear(
+    data,
+    month,
+    year,
+    true,
+  );
+
   const activeUsers = new Set<string>();
 
-  for (const activity of monthlyData) {
+  for (const activity of monthlyDataForActiveUsers) {
     if (activeDescripton === "lastSeenActivity") {
       if (activity.lastSeenAt.length > 0) {
         activeUsers.add(activity.userId);
@@ -103,4 +130,4 @@ function calculateMLUandMAU(
   };
 }
 
-export { UserActivity, calculateMLUandMAU, filterByMonth, isActive };
+export { UserActivity, calculateMLUandMAU, filterByMonthAndYear, isActive };

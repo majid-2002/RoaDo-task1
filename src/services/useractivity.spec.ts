@@ -2,7 +2,7 @@ import {
   UserActivity,
   calculateMLUandMAU,
   isActive,
-  filterByMonth,
+  filterByMonthAndYear,
 } from "./useractivity.services";
 
 describe("User Activity Functions", () => {
@@ -52,7 +52,7 @@ describe("User Activity Functions", () => {
   });
 
   test("filterByMonth function - filter January 2022", () => {
-    const filteredData = filterByMonth(userActivityData, 0, 2022);
+    const filteredData = filterByMonthAndYear(userActivityData, 0, 2022);
     expect(filteredData.length).toBe(2);
   });
 
